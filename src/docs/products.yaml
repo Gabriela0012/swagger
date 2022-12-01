@@ -1,0 +1,96 @@
+components:
+  requestBodies:
+    nuevoProducto:
+      type: object
+      properties:
+        name:
+          type: String
+          description: Nombre completo del producto
+        price:
+          type: Number
+          description: Precio del producto
+        thumbnail:
+          type: String
+          description: URL donde esta guardada la foto del producto
+        description:
+          type: String
+          description: Descripción del producto
+        code:
+          type: String
+          description: Codigo del producto
+        stock:
+          type: Number
+          description: Precio del producto
+      example:
+        name: Jean
+        price: 13000
+        thumbnail: 'http://localhost:8080/thumbnails/1669061077320-jean.jpg'
+        description: Jeans rigido
+        code: 54d5hf87f8
+        stock: 10
+  schemas:
+    Product:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id autogenerado de mongo
+        name:
+          type: String
+          description: Nombre completo del producto
+        price:
+          type: Number
+          description: Precio del producto
+        thumbnail:
+          type: String
+          description: URL donde esta guardada la foto del producto
+        description:
+          type: String
+          description: Descripción del producto
+        code:
+          type: String
+          description: Codigo del producto
+        stock:
+          type: Number
+          description: Precio del producto
+        
+      example:
+        _id: ObjectId("63asdf64d8fgh54s")
+        name: Jean
+        price: 13000
+        thumbnail: 'http://localhost:8080/thumbnails/1669061077320-jean.jpg'
+        description: Jeans rigido
+        code: 54d5hf87f8
+        stock: 10
+paths:
+  /api/products/:
+    get:
+      summary: Obtiene todos los productos de la base de datos
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Los productos se obtuvieron correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+    post:
+      summary: Crea un nuevo producto
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/requestBodies/nuevoProducto"
+      responses:
+        "200":
+          description: "El producto se insertó correctamente"
+        "400":
+          description: "El producto ya existía en la base de datos o se enviaron campos incompletos"
+        "500":
+          description: "Error interno de inserción a la base de datos"
